@@ -46,12 +46,12 @@ const ObjectProperties: React.FC = () => {
   };
 
   return (
-    <div className="absolute right-72 top-4 bg-white rounded-lg shadow-lg p-4 w-64">
+    <div className="absolute right-72 top-4 bg-[#1a1a1a] rounded-xl shadow-2xl shadow-black/20 p-4 w-64 border border-white/5">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-semibold">Properties</h2>
+        <h2 className="text-lg font-semibold text-white/90">Properties</h2>
         <button
           onClick={() => useSceneStore.getState().setSelectedObject(null)}
-          className="p-1 hover:bg-gray-100 rounded-full"
+          className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-white/70"
         >
           <X className="w-4 h-4" />
         </button>
@@ -59,17 +59,17 @@ const ObjectProperties: React.FC = () => {
 
       <div className="space-y-4">
         <div>
-          <h3 className="font-medium mb-2">Position</h3>
+          <h3 className="font-medium mb-2 text-white/70 text-sm">Position</h3>
           <div className="grid grid-cols-3 gap-2">
             {(['x', 'y', 'z'] as const).map((axis) => (
               <div key={`pos-${axis}`}>
-                <label className="text-xs text-gray-500 uppercase">{axis}</label>
+                <label className="text-xs text-white/50 uppercase block mb-1">{axis}</label>
                 <input
                   type="number"
                   value={selectedObject.position[axis]}
                   onChange={(e) => handlePositionChange(axis, parseFloat(e.target.value))}
                   step="0.1"
-                  className="w-full border rounded px-2 py-1 text-sm"
+                  className="w-full bg-[#2a2a2a] border border-white/10 rounded px-2 py-1 text-sm text-white/90 focus:outline-none focus:border-blue-500/50"
                 />
               </div>
             ))}
@@ -77,17 +77,17 @@ const ObjectProperties: React.FC = () => {
         </div>
 
         <div>
-          <h3 className="font-medium mb-2">Rotation (degrees)</h3>
+          <h3 className="font-medium mb-2 text-white/70 text-sm">Rotation (degrees)</h3>
           <div className="grid grid-cols-3 gap-2">
             {(['x', 'y', 'z'] as const).map((axis) => (
               <div key={`rot-${axis}`}>
-                <label className="text-xs text-gray-500 uppercase">{axis}</label>
+                <label className="text-xs text-white/50 uppercase block mb-1">{axis}</label>
                 <input
                   type="number"
                   value={(selectedObject.rotation[axis] * 180) / Math.PI}
                   onChange={(e) => handleRotationChange(axis, parseFloat(e.target.value))}
                   step="5"
-                  className="w-full border rounded px-2 py-1 text-sm"
+                  className="w-full bg-[#2a2a2a] border border-white/10 rounded px-2 py-1 text-sm text-white/90 focus:outline-none focus:border-blue-500/50"
                 />
               </div>
             ))}
@@ -95,18 +95,18 @@ const ObjectProperties: React.FC = () => {
         </div>
 
         <div>
-          <h3 className="font-medium mb-2">Scale</h3>
+          <h3 className="font-medium mb-2 text-white/70 text-sm">Scale</h3>
           <div className="grid grid-cols-3 gap-2">
             {(['x', 'y', 'z'] as const).map((axis) => (
               <div key={`scale-${axis}`}>
-                <label className="text-xs text-gray-500 uppercase">{axis}</label>
+                <label className="text-xs text-white/50 uppercase block mb-1">{axis}</label>
                 <input
                   type="number"
                   value={selectedObject.scale[axis]}
                   onChange={(e) => handleScaleChange(axis, parseFloat(e.target.value))}
                   step="0.1"
                   min="0.1"
-                  className="w-full border rounded px-2 py-1 text-sm"
+                  className="w-full bg-[#2a2a2a] border border-white/10 rounded px-2 py-1 text-sm text-white/90 focus:outline-none focus:border-blue-500/50"
                 />
               </div>
             ))}
@@ -116,25 +116,25 @@ const ObjectProperties: React.FC = () => {
         {material && (
           <>
             <div>
-              <h3 className="font-medium mb-2">Color</h3>
+              <h3 className="font-medium mb-2 text-white/70 text-sm">Color</h3>
               <div className="flex gap-2">
                 <input
                   type="color"
                   value={currentColor}
                   onChange={(e) => updateObjectColor(e.target.value)}
-                  className="w-12 h-8 rounded cursor-pointer"
+                  className="w-12 h-8 rounded cursor-pointer bg-[#2a2a2a] border border-white/10"
                 />
                 <input
                   type="text"
                   value={currentColor}
                   onChange={(e) => updateObjectColor(e.target.value)}
-                  className="flex-1 border rounded px-2 py-1 text-sm"
+                  className="flex-1 bg-[#2a2a2a] border border-white/10 rounded px-2 py-1 text-sm text-white/90 focus:outline-none focus:border-blue-500/50"
                 />
               </div>
             </div>
 
             <div>
-              <h3 className="font-medium mb-2">Opacity</h3>
+              <h3 className="font-medium mb-2 text-white/70 text-sm">Opacity</h3>
               <div className="flex gap-2 items-center">
                 <input
                   type="range"
@@ -143,9 +143,9 @@ const ObjectProperties: React.FC = () => {
                   step="0.01"
                   value={localOpacity}
                   onChange={(e) => handleOpacityChange(parseFloat(e.target.value))}
-                  className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                  className="flex-1 h-2 bg-[#2a2a2a] rounded-lg appearance-none cursor-pointer"
                 />
-                <span className="text-sm w-12 text-right">
+                <span className="text-sm w-12 text-right text-white/90">
                   {Math.round(localOpacity * 100)}%
                 </span>
               </div>

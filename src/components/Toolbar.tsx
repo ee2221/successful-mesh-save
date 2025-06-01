@@ -62,56 +62,56 @@ const Toolbar: React.FC = () => {
   ] as const;
 
   return (
-    <div className="absolute top-4 left-4 bg-white rounded-lg shadow-lg p-2">
-      <div className="flex flex-col gap-2">
+    <div className="absolute top-4 left-4 bg-[#1a1a1a] rounded-xl shadow-2xl shadow-black/20 p-3 border border-white/5">
+      <div className="flex flex-col gap-3">
         {/* 3D Shapes */}
-        <div className="space-y-2 border-b border-gray-200 pb-2">
+        <div className="space-y-1 border-b border-white/10 pb-3">
           <button
             onClick={() => createObject(new THREE.BoxGeometry(), 'Cube')}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors w-full flex items-center gap-2"
+            className="p-2 hover:bg-white/5 rounded-lg transition-colors w-full flex items-center gap-2 text-white/90"
             title="Add Cube"
           >
             <Cuboid className="w-5 h-5" />
-            <span className="text-sm">Cube</span>
+            <span className="text-sm font-medium">Cube</span>
           </button>
           <button
             onClick={() => createObject(new THREE.SphereGeometry(0.5, 32, 32), 'Sphere')}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors w-full flex items-center gap-2"
+            className="p-2 hover:bg-white/5 rounded-lg transition-colors w-full flex items-center gap-2 text-white/90"
             title="Add Sphere"
           >
             <Cherry className="w-5 h-5" />
-            <span className="text-sm">Sphere</span>
+            <span className="text-sm font-medium">Sphere</span>
           </button>
           <button
             onClick={() => createObject(new THREE.CylinderGeometry(0.5, 0.5, 1, 32), 'Cylinder')}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors w-full flex items-center gap-2"
+            className="p-2 hover:bg-white/5 rounded-lg transition-colors w-full flex items-center gap-2 text-white/90"
             title="Add Cylinder"
           >
             <Cylinder className="w-5 h-5" />
-            <span className="text-sm">Cylinder</span>
+            <span className="text-sm font-medium">Cylinder</span>
           </button>
           <button
             onClick={() => createObject(new THREE.ConeGeometry(0.5, 1, 32), 'Cone')}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors w-full flex items-center gap-2"
+            className="p-2 hover:bg-white/5 rounded-lg transition-colors w-full flex items-center gap-2 text-white/90"
             title="Add Cone"
           >
             <Cone className="w-5 h-5" />
-            <span className="text-sm">Cone</span>
+            <span className="text-sm font-medium">Cone</span>
           </button>
           <button
             onClick={() => createObject(new THREE.TetrahedronGeometry(0.5), 'Tetrahedron')}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors w-full flex items-center gap-2"
+            className="p-2 hover:bg-white/5 rounded-lg transition-colors w-full flex items-center gap-2 text-white/90"
             title="Add Tetrahedron"
           >
             <Pyramid className="w-5 h-5" />
-            <span className="text-sm">Tetrahedron</span>
+            <span className="text-sm font-medium">Tetrahedron</span>
           </button>
         </div>
 
         {/* Transform Tools */}
-        <div className="space-y-2 border-b border-gray-200 pb-2">
+        <div className="space-y-1 border-b border-white/10 pb-3">
           <div className="px-2 py-1">
-            <h3 className="text-xs font-medium text-gray-500 uppercase">Transform</h3>
+            <h3 className="text-xs font-medium text-white/50 uppercase tracking-wider">Transform</h3>
           </div>
           {transformTools.map(({ icon: Icon, mode, title }) => (
             <button
@@ -121,20 +121,22 @@ const Toolbar: React.FC = () => {
                 setEditMode(null);
               }}
               className={`p-2 rounded-lg transition-colors w-full flex items-center gap-2 ${
-                transformMode === mode && !editMode ? 'bg-blue-100 text-blue-600' : 'hover:bg-gray-100'
+                transformMode === mode && !editMode 
+                  ? 'bg-blue-500/20 text-blue-400'
+                  : 'text-white/90 hover:bg-white/5'
               }`}
               title={title}
             >
               <Icon className="w-5 h-5" />
-              <span className="text-sm">{title}</span>
+              <span className="text-sm font-medium">{title}</span>
             </button>
           ))}
         </div>
 
         {/* Edit Tools */}
-        <div className="space-y-2">
+        <div className="space-y-1">
           <div className="px-2 py-1">
-            <h3 className="text-xs font-medium text-gray-500 uppercase">Edit Mode</h3>
+            <h3 className="text-xs font-medium text-white/50 uppercase tracking-wider">Edit Mode</h3>
           </div>
           {editTools.map(({ icon: Icon, mode, title }) => (
             <button
@@ -144,12 +146,14 @@ const Toolbar: React.FC = () => {
                 setTransformMode(null);
               }}
               className={`p-2 rounded-lg transition-colors w-full flex items-center gap-2 ${
-                editMode === mode ? 'bg-green-100 text-green-600' : 'hover:bg-gray-100'
+                editMode === mode 
+                  ? 'bg-blue-500/20 text-blue-400'
+                  : 'text-white/90 hover:bg-white/5'
               }`}
               title={title}
             >
               <Icon className="w-5 h-5" />
-              <span className="text-sm">{title}</span>
+              <span className="text-sm font-medium">{title}</span>
             </button>
           ))}
         </div>

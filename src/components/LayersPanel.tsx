@@ -20,11 +20,11 @@ const LayersPanel: React.FC = () => {
   };
 
   return (
-    <div className="absolute right-4 top-4 bg-white rounded-lg shadow-lg p-4 w-64">
-      <h2 className="text-lg font-semibold mb-4">Layers</h2>
-      <div className="space-y-2">
+    <div className="absolute right-4 top-4 bg-[#1a1a1a] rounded-xl shadow-2xl shadow-black/20 p-4 w-64 border border-white/5">
+      <h2 className="text-lg font-semibold mb-4 text-white/90">Layers</h2>
+      <div className="space-y-1">
         {objects.map(({ id, name, visible }) => (
-          <div key={id} className="flex items-center justify-between p-2 hover:bg-gray-50 rounded">
+          <div key={id} className="flex items-center justify-between p-2 hover:bg-white/5 rounded-lg transition-colors text-white/90">
             {editingId === id ? (
               <input
                 type="text"
@@ -32,23 +32,23 @@ const LayersPanel: React.FC = () => {
                 onChange={(e) => setEditingName(e.target.value)}
                 onBlur={saveEdit}
                 onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
-                className="border rounded px-2 py-1 w-32"
+                className="bg-[#2a2a2a] border border-white/10 rounded px-2 py-1 w-32 text-sm focus:outline-none focus:border-blue-500/50"
                 autoFocus
               />
             ) : (
-              <span className="flex-1">{name}</span>
+              <span className="flex-1 text-sm">{name}</span>
             )}
-            <div className="flex gap-2">
+            <div className="flex gap-1">
               <button
                 onClick={() => editingId !== id && startEditing(id, name)}
-                className="p-1 hover:text-blue-600"
+                className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
                 title="Rename"
               >
                 <Edit2 className="w-4 h-4" />
               </button>
               <button
                 onClick={() => toggleVisibility(id)}
-                className="p-1 hover:text-blue-600"
+                className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
                 title={visible ? 'Hide' : 'Show'}
               >
                 {visible ? (
@@ -59,7 +59,7 @@ const LayersPanel: React.FC = () => {
               </button>
               <button
                 onClick={() => removeObject(id)}
-                className="p-1 hover:text-red-600"
+                className="p-1.5 hover:bg-white/10 rounded-lg transition-colors text-red-400 hover:text-red-300"
                 title="Delete"
               >
                 <Trash2 className="w-4 h-4" />
