@@ -160,16 +160,31 @@ const EditModeOverlay = () => {
 };
 
 const Scene: React.FC = () => {
-  const { objects, selectedObject, setSelectedObject, transformMode, editMode, draggedVertex, updateVertexDrag } = useSceneStore();
+  const { objects, selectedObject, setSelectedObject, transformMode, editMode, draggedVertex, selectedElements, updateVertexDrag } = useSceneStore();
   const [selectedPosition, setSelectedPosition] = useState<THREE.Vector3 | null>(null);
 
   useEffect(() => {
-    if (draggedVertex) {
-      setSelectedPosition(draggedVertex.position);
+    if (editMode === 'vertex' && selectedObject instanceof THREE.Mesh) {
+      if (draggedVertex) {
+        setSelectedPosition(draggedVertex.position);
+      } else if (selectedElements.vertices.length > 0) {
+        const geometry = selectedObject.geometry;
+        const positions = geometry.attributes.position;
+        const vertexIndex = selectedElements.vertices[0];
+        const position = new THREE.Vector3(
+          positions.getX(vertexIndex),
+          positions.getY(vertexIndex),
+          positions.getZ(vertexIndex)
+        );
+        position.applyMatrix4(selectedObject.matrixWorld);
+        setSelectedPosition(position);
+      } else {
+        setSelectedPosition(null);
+      }
     } else {
       setSelectedPosition(null);
     }
-  }, [draggedVertex]);
+  }, [editMode, selectedObject, draggedVertex, selectedElements.vertices]);
 
   const handlePositionChange = (newPosition: THREE.Vector3) => {
     if (selectedObject instanceof THREE.Mesh) {
