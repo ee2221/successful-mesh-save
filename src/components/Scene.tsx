@@ -4,14 +4,49 @@ import { OrbitControls, TransformControls, Grid } from '@react-three/drei';
 import { useSceneStore } from '../store/sceneStore';
 import * as THREE from 'three';
 
-const VertexCoordinates = ({ position }) => {
+const VertexCoordinates = ({ position, onPositionChange }) => {
   if (!position) return null;
 
+  const handleChange = (axis: 'x' | 'y' | 'z', value: string) => {
+    const newPosition = position.clone();
+    newPosition[axis] = parseFloat(value) || 0;
+    onPositionChange(newPosition);
+  };
+
   return (
-    <div className="absolute left-4 bottom-4 bg-black/75 text-white p-3 rounded-lg font-mono text-sm">
-      <div>X: {position.x.toFixed(3)}</div>
-      <div>Y: {position.y.toFixed(3)}</div>
-      <div>Z: {position.z.toFixed(3)}</div>
+    <div className="absolute right-4 bottom-4 bg-black/75 text-white p-4 rounded-lg font-mono">
+      <div className="space-y-2">
+        <div className="flex items-center gap-2">
+          <label className="w-8">X:</label>
+          <input
+            type="number"
+            value={position.x.toFixed(3)}
+            onChange={(e) => handleChange('x', e.target.value)}
+            className="bg-gray-800 px-2 py-1 rounded w-24 text-right"
+            step="0.1"
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <label className="w-8">Y:</label>
+          <input
+            type="number"
+            value={position.y.toFixed(3)}
+            onChange={(e) => handleChange('y', e.target.value)}
+            className="bg-gray-800 px-2 py-1 rounded w-24 text-right"
+            step="0.1"
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <label className="w-8">Z:</label>
+          <input
+            type="number"
+            value={position.z.toFixed(3)}
+            onChange={(e) => handleChange('z', e.target.value)}
+            className="bg-gray-800 px-2 py-1 rounded w-24 text-right"
+            step="0.1"
+          />
+        </div>
+      </div>
     </div>
   );
 };
@@ -125,7 +160,7 @@ const EditModeOverlay = () => {
 };
 
 const Scene: React.FC = () => {
-  const { objects, selectedObject, setSelectedObject, transformMode, editMode, draggedVertex } = useSceneStore();
+  const { objects, selectedObject, setSelectedObject, transformMode, editMode, draggedVertex, updateVertexDrag } = useSceneStore();
   const [selectedPosition, setSelectedPosition] = useState<THREE.Vector3 | null>(null);
 
   useEffect(() => {
@@ -135,6 +170,12 @@ const Scene: React.FC = () => {
       setSelectedPosition(null);
     }
   }, [draggedVertex]);
+
+  const handlePositionChange = (newPosition: THREE.Vector3) => {
+    if (selectedObject instanceof THREE.Mesh) {
+      updateVertexDrag(newPosition);
+    }
+  };
 
   return (
     <div className="relative w-full h-full">
@@ -177,7 +218,10 @@ const Scene: React.FC = () => {
         <OrbitControls makeDefault />
       </Canvas>
       {editMode === 'vertex' && selectedPosition && (
-        <VertexCoordinates position={selectedPosition} />
+        <VertexCoordinates 
+          position={selectedPosition}
+          onPositionChange={handlePositionChange}
+        />
       )}
     </div>
   );
