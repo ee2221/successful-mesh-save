@@ -188,10 +188,7 @@ const Scene: React.FC = () => {
 
   const handlePositionChange = (newPosition: THREE.Vector3) => {
     if (selectedObject instanceof THREE.Mesh) {
-      const worldMatrix = selectedObject.matrixWorld;
-      const inverseMatrix = new THREE.Matrix4().copy(worldMatrix).invert();
-      const localPosition = newPosition.clone().applyMatrix4(inverseMatrix);
-      updateVertexDrag(localPosition);
+      updateVertexDrag(newPosition);
     }
   };
 
