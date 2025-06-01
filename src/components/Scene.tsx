@@ -1,8 +1,20 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls, TransformControls, Grid } from '@react-three/drei';
 import { useSceneStore } from '../store/sceneStore';
 import * as THREE from 'three';
+
+const VertexCoordinates = ({ position }) => {
+  if (!position) return null;
+
+  return (
+    <div className="absolute left-4 bottom-4 bg-black/75 text-white p-3 rounded-lg font-mono text-sm">
+      <div>X: {position.x.toFixed(3)}</div>
+      <div>Y: {position.y.toFixed(3)}</div>
+      <div>Z: {position.z.toFixed(3)}</div>
+    </div>
+  );
+};
 
 const VertexPoints = ({ geometry, object }) => {
   const { editMode, selectedElements, startVertexDrag } = useSceneStore();
@@ -113,47 +125,61 @@ const EditModeOverlay = () => {
 };
 
 const Scene: React.FC = () => {
-  const { objects, selectedObject, setSelectedObject, transformMode } = useSceneStore();
+  const { objects, selectedObject, setSelectedObject, transformMode, editMode, draggedVertex } = useSceneStore();
+  const [selectedPosition, setSelectedPosition] = useState<THREE.Vector3 | null>(null);
+
+  useEffect(() => {
+    if (draggedVertex) {
+      setSelectedPosition(draggedVertex.position);
+    } else {
+      setSelectedPosition(null);
+    }
+  }, [draggedVertex]);
 
   return (
-    <Canvas
-      camera={{ position: [5, 5, 5], fov: 75 }}
-      className="w-full h-full bg-gray-900"
-    >
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[10, 10, 5]} intensity={1} />
-      
-      <Grid
-        infiniteGrid
-        cellSize={1}
-        sectionSize={3}
-        fadeDistance={30}
-        fadeStrength={1}
-      />
-
-      {objects.map(({ object, visible, id }) => (
-        visible && (
-          <primitive
-            key={id}
-            object={object}
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelectedObject(object);
-            }}
-          />
-        )
-      ))}
-
-      {selectedObject && transformMode && (
-        <TransformControls
-          object={selectedObject}
-          mode={transformMode}
+    <div className="relative w-full h-full">
+      <Canvas
+        camera={{ position: [5, 5, 5], fov: 75 }}
+        className="w-full h-full bg-gray-900"
+      >
+        <ambientLight intensity={0.5} />
+        <directionalLight position={[10, 10, 5]} intensity={1} />
+        
+        <Grid
+          infiniteGrid
+          cellSize={1}
+          sectionSize={3}
+          fadeDistance={30}
+          fadeStrength={1}
         />
-      )}
 
-      <EditModeOverlay />
-      <OrbitControls makeDefault />
-    </Canvas>
+        {objects.map(({ object, visible, id }) => (
+          visible && (
+            <primitive
+              key={id}
+              object={object}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedObject(object);
+              }}
+            />
+          )
+        ))}
+
+        {selectedObject && transformMode && (
+          <TransformControls
+            object={selectedObject}
+            mode={transformMode}
+          />
+        )}
+
+        <EditModeOverlay />
+        <OrbitControls makeDefault />
+      </Canvas>
+      {editMode === 'vertex' && selectedPosition && (
+        <VertexCoordinates position={selectedPosition} />
+      )}
+    </div>
   );
 };
 
